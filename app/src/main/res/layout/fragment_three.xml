@@ -1,15 +1,56 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+android:orientation="vertical"
+    android:gravity="center"
     tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/description"
-        android:gravity="center"
-        android:textSize="28dp"/>
 
-</FrameLayout>
+    <!-- Mahali ya bidhaa Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/edt_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mahali ilipo Bidhaa"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Password Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/edt_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Maelezo kuhusu bidhaa"
+            android:lines="4"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+
+        >
+        <!-- Signup Button -->
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_marginTop="20dp"
+            android:background="#E91E63"
+            android:text="Tanganza Bidhaa"/>
+
+
+    </LinearLayout>
+</LinearLayout>
