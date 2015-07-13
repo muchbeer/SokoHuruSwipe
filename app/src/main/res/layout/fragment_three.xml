@@ -19,7 +19,7 @@ android:orientation="vertical"
             android:hint="Mahali ilipo Bidhaa"/>
     </android.support.design.widget.TextInputLayout>
 
-    <!-- Password Label -->
+    <!-- Description Label  gravity specify Cursor Position -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,9 +28,11 @@ android:orientation="vertical"
         <EditText android:id="@+id/edt_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:inputType="textMultiLine"
             android:hint="Maelezo kuhusu bidhaa"
-            android:lines="4"/>
+            android:lines="3"
+            android:scrollbars="vertical"
+            android:gravity="top|left" />
     </android.support.design.widget.TextInputLayout>
 
 
