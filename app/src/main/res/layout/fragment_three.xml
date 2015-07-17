@@ -1,31 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 android:orientation="vertical"
-    android:gravity="center"
+
     tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/places"
+    android:paddingTop="28dp">
     <!-- Mahali ya bidhaa Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:layout_marginBottom="8dp">
         <EditText android:id="@+id/edt_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Mahali ilipo Bidhaa"/>
     </android.support.design.widget.TextInputLayout>
+</LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/desc"
+        android:paddingTop="20dp"
+        android:layout_below="@+id/places"
+        android:orientation="vertical">
     <!-- Description Label  gravity specify Cursor Position -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
         <EditText android:id="@+id/edt_desc"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -36,15 +53,42 @@ android:orientation="vertical"
     </android.support.design.widget.TextInputLayout>
 
 
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
+        android:layout_below="@+id/desc"
+        android:orientation="vertical">
 
-        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:text="name"
+            android:textSize="19dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/price"
+            android:text="price"
+            android:textSize="19dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contact"
+            android:text="contact"
+            android:textSize="19dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/link"
+            android:text="link"
+            android:textSize="19dp"/>
+    </LinearLayout>
         <!-- Signup Button -->
         <Button
+            android:layout_alignParentBottom="true"
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -54,5 +98,5 @@ android:orientation="vertical"
             android:text="Tanganza Bidhaa"/>
 
 
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
+</ScrollView>
