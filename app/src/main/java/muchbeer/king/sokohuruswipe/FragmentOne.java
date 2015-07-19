@@ -44,6 +44,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
+    SharedPreferences.Editor editor;
 
     private TextView messageText;
     private TextView messagePercentage;
@@ -149,6 +150,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         messageText  = (TextView)view.findViewById(R.id.txtTitle);
 
         nextButton = (Button) view.findViewById(R.id.btn_image);
+       uploadButton.setVisibility(View.GONE);
+
         
         imageview = (ImageView)view.findViewById(R.id.imageViewPic);
         title=(EditText) view.findViewById(R.id.title);
@@ -196,16 +199,22 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         if (requestCode == 1 && resultCode == MainActivity.RESULT_OK) {
             //Bitmap photo = (Bitmap) data.getData().getPath();
             //Uri imagename=data.getData();
-            Uri selectedImageUri = data.getData();
-            imagepath = getPath(selectedImageUri);
-            Bitmap bitmap= BitmapFactory.decodeFile(imagepath);
-            imageview.setImageBitmap(bitmap);
-            messageText.setText("Bofya Pakua kutunza picha.");
-
+            saveUploadPicture(data);
            // messageText.setText("Uploading:" +imagepath);
 
 
         }
+
+
+    }
+
+    private void saveUploadPicture(Intent data) {
+        Uri selectedImageUri = data.getData();
+        imagepath = getPath(selectedImageUri);
+        Bitmap bitmap= BitmapFactory.decodeFile(imagepath);
+        imageview.setImageBitmap(bitmap);
+        // messageText.setText("Bofya Pakua kutunza picha.");
+        uploadButton.setVisibility(View.VISIBLE);
     }
 
     public String getPath(Uri uri) {
@@ -354,7 +363,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
 
                             sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                           editor = sharedpreferences.edit();
 
                             editor.putString(KEY_LINK, submitImage);  // Saving string
                             // Save the changes in SharedPreferences
@@ -406,5 +415,29 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
             return serverResponseCode;
 
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
     }
 }

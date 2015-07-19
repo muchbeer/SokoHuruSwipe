@@ -19,7 +19,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/txtTitle"
-    android:text="Error appear hear"
     android:gravity="center_horizontal"
     android:textColor="#009688"
     />

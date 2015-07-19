@@ -20,6 +20,7 @@ public class FragmentThree extends Fragment {
 
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     public static final String KEY_NAME = "name";
     public static final String KEY_PRICE = "price";
@@ -52,13 +53,13 @@ public class FragmentThree extends Fragment {
 
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor = sharedpreferences.edit();
 
         //   Intent collectDataIntent = getActivity().getIntent();
      //   position = collectDataIntent.getStringExtra(TAG_POSITION);
 
-        editor.clear();
-        editor.commit();
+        //   editor.clear();
+        //     editor.commit();
 
         Button btnSubmit = (Button) view.findViewById(R.id.btn_submit);
 
@@ -68,7 +69,7 @@ public class FragmentThree extends Fragment {
                 name  = sharedpreferences.getString(KEY_NAME, "");         // getting boolean
                 price =   sharedpreferences.getString(KEY_PRICE, "");             // getting Integer
                 contact =   sharedpreferences.getString(KEY_CONTACT, "");           // getting Float
-                link =    sharedpreferences.getString(KEY_LINK, "");            // getting Long
+                link =    sharedpreferences.getString(KEY_LINK, "me");            // getting Long
                 //   pref.getString("key_name5", null);          // getting String
 
                 if (sharedpreferences.contains(KEY_NAME)) {
@@ -105,5 +106,16 @@ public class FragmentThree extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        editor.remove(KEY_LINK); // will delete key email
+        editor.commit();
+
+    }
 }
