@@ -45,62 +45,19 @@ public class FragmentTwo extends Fragment {
         edt_Phone = (EditText) view.findViewById(R.id.edt_phone);
 
 
+        name  = edt_Name.getText().toString();
+        price  = edt_Price.getText().toString();
+        phone  = edt_Phone.getText().toString();
+
+        editor = sharedpreferences.edit();
+        editor.putString(KEY_NAME, name);
+        editor.putString(KEY_PRICE, price);
+        editor.putString(KEY_CONTACT, phone);
+        editor.commit();
+
+
         Button  btnSend = (Button) view.findViewById(R.id.sendInformation);
 
-        edt_Phone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                phone  = edt_Phone.getText().toString();
-                editor = sharedpreferences.edit();
-                editor.putString(KEY_PRICE, phone);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edt_Price.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                price  = edt_Price.getText().toString();
-                editor = sharedpreferences.edit();
-                editor.putString(KEY_PRICE, price);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edt_Name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                name  = edt_Name.getText().toString();
-                editor = sharedpreferences.edit();
-                editor.putString(KEY_NAME, name);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override

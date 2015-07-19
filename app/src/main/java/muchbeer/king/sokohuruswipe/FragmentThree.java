@@ -2,6 +2,7 @@ package muchbeer.king.sokohuruswipe;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,13 +20,17 @@ public class FragmentThree extends Fragment {
 
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
-    SharedPreferences.Editor editor;
+
     public static final String KEY_NAME = "name";
     public static final String KEY_PRICE = "price";
     public static final String KEY_CONTACT = "contact";
     public static final String KEY_LINK = "link";
     private TextView txtName,txtPrice, txtContact,txtLink;
     private String name,price,contact,link;
+
+    private static final int SHARING_CODE = 1;
+    private static final String TAG_POSITION = "position";
+    private String position;
 
 
     public FragmentThree() {
@@ -46,6 +51,14 @@ public class FragmentThree extends Fragment {
         txtLink = (TextView) view.findViewById(R.id.link);
 
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        //   Intent collectDataIntent = getActivity().getIntent();
+     //   position = collectDataIntent.getStringExtra(TAG_POSITION);
+
+        editor.clear();
+        editor.commit();
 
         Button btnSubmit = (Button) view.findViewById(R.id.btn_submit);
 
@@ -69,11 +82,13 @@ public class FragmentThree extends Fragment {
                 if (sharedpreferences.contains(KEY_CONTACT)) {
                     txtContact.setText(contact);
                 }
-                if (sharedpreferences.contains(KEY_LINK)) {
-                    txtLink.setText(link);
+               if (sharedpreferences.contains(KEY_LINK)) {
+                  txtLink.setText(link);
                 }
-
+               // txtLink.setText(position);
             }
+
+
         });
         //Shared me
       /**************** Get SharedPreferences data *******************/

@@ -42,7 +42,8 @@ import java.util.GregorianCalendar;
  */
 public class FragmentOne extends Fragment implements View.OnClickListener {
 
-
+    private static final int SHARING_CODE = 1;
+    private static final String TAG_POSITION = "position";
 
     private TextView messageText;
     private TextView messagePercentage;
@@ -69,6 +70,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     //Fragment SharedPrefences
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
+
 
     public static final String KEY_LINK = "link";
 
@@ -140,7 +142,6 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
 
 //Shared me
-        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
 
         uploadButton = (Button) view.findViewById(R.id.upLoadButton);
@@ -344,12 +345,20 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
                             submitImage = "http://sokouhuru.com/uploads/" + fileName;
 
+                          //  Intent startIntent = new Intent(getActivity(), FragmentThree.class);
+                            // positionSearch = getActivity().position;
+                         //   startIntent.putExtra(TAG_POSITION, submitImage);
+                            //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+                        //    startActivityForResult(startIntent, SHARING_CODE);
                             //Storing the links
+
+
+                            sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
-                          //  editor = sharedpreferences.edit();
+
                             editor.putString(KEY_LINK, submitImage);  // Saving string
                             // Save the changes in SharedPreferences
-                            editor.commit(); // commit changes
+                          editor.commit(); // commit changes
 
 
                             Toast.makeText(getActivity(), "Umefanikiwa kupakua." + fileName, Toast.LENGTH_SHORT).show();
