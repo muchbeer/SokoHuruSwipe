@@ -93,41 +93,45 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
             //  progressBar.setVisibility(View.VISIBLE);
             // dialog = ProgressDialog.show(MainActivity.this, "", "Uploading file...", true);
 
-            dialog = new ProgressDialog(getActivity(),
-                    R.style.AppTheme_Dark_Dialog);
-            dialog.setIndeterminate(true);
-            dialog.setMessage("Tafadhari subiri...");
-            dialog.show();
+            uploadPicha();
+        }
+    }
 
-          //  messageText.setText("uploading started.....");
-            new Thread(new Runnable() {
-                public void run() {
+    private void uploadPicha() {
+        dialog = new ProgressDialog(getActivity(),
+                R.style.AppTheme_Dark_Dialog);
+        dialog.setIndeterminate(true);
+        dialog.setMessage("Tafadhari subiri...");
+        dialog.show();
+
+        //  messageText.setText("uploading started.....");
+        new Thread(new Runnable() {
+            public void run() {
 
 
 
 // Start lengthy operation in a background thread
-                    new Thread(new Runnable() {
-                        public void run() {
-                            while (serverResponseCode != 200) {
-                                uploadFile(imagepath);
-                                //  mProgressStatus = doWork();
-                                //  messagePercentage.setText(serverResponseCode);
-                                // Update the progress bar
-                                mHandler.post(new Runnable() {
-                                    public void run() {
-                                       // progressBar.setProgress(serverResponseCode);
-                                        //  progressBar.setVisibility(View.VISIBLE);
+                new Thread(new Runnable() {
+                    public void run() {
+                        while (serverResponseCode != 200) {
+                            uploadFile(imagepath);
+                            //  mProgressStatus = doWork();
+                            //  messagePercentage.setText(serverResponseCode);
+                            // Update the progress bar
+                            mHandler.post(new Runnable() {
+                                public void run() {
+                                   // progressBar.setProgress(serverResponseCode);
+                                    //  progressBar.setVisibility(View.VISIBLE);
 
-                                    }
-                                });
-                            }
+                                }
+                            });
                         }
-                    }).start();
+                    }
+                }).start();
 
 
-                }
-            }).start();
-        }
+            }
+        }).start();
     }
 
     public FragmentOne() {
@@ -189,7 +193,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         Bitmap bitmap= BitmapFactory.decodeFile(imagepath);
         imageview.setImageBitmap(bitmap);
         // messageText.setText("Bofya Pakua kutunza picha.");
-        uploadButton.setVisibility(View.VISIBLE);
+       // uploadButton.setVisibility(View.VISIBLE);
+        uploadPicha();
     }
 
     public String getPath(Uri uri) {
