@@ -57,7 +57,7 @@ public class FragmentThree extends Fragment {
     private SessionManager session;
     private SQLiteHandler db;
     private EditText edtPlace, edtDesc;
-    private String place, desc;
+    private String place, descr;
  //   private static final String TAG = "Tell error";
 
     private static final String TAG = FragmentThree.class.getSimpleName();
@@ -110,7 +110,7 @@ public class FragmentThree extends Fragment {
             public void onClick(View view) {
 
                 place  = edtPlace.getText().toString();
-                desc  = edtDesc.getText().toString();
+                descr  = edtDesc.getText().toString();
 
                 name  = sharedpreferences.getString(KEY_NAME, "");         // getting boolean
                 price =   sharedpreferences.getString(KEY_PRICE, "");             // getting Integer
@@ -137,7 +137,7 @@ public class FragmentThree extends Fragment {
                 //INSERTING STAFF
                 if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
                         && !image.isEmpty() && !price.isEmpty()
-                        && !place.isEmpty() && !desc.isEmpty()) {
+                        && !place.isEmpty() && !descr.isEmpty()) {
                     registerUser();
                 } else {
                     Toast.makeText(getActivity(),
@@ -177,7 +177,14 @@ public class FragmentThree extends Fragment {
               //  edtPlace.setText("");
               //  edtDesc.setText("");
 
-                Toast.makeText(getActivity(),"Ongera umeweza kutangaza bidhaa yako:  " + pointError, Toast.LENGTH_LONG).show();
+                if(pointError.contains("Ongera")) {
+                    Toast.makeText(getActivity(), "Umeweza asilimia zote", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "kuna tatizo " + pointError, Toast.LENGTH_LONG).show();
+                }
+
+
+             //   Toast.makeText(getActivity(),"Ongera umeweza kutangaza bidhaa yako:  " + pointError, Toast.LENGTH_LONG).show();
 
                 //Database staff
                 /**
@@ -239,7 +246,7 @@ public class FragmentThree extends Fragment {
                 params.put("image", image);
                 params.put("contact", contact);
                 params.put("place", place);
-                params.put("desc", desc);
+                params.put("descr", descr);
                 return params;
             }
 

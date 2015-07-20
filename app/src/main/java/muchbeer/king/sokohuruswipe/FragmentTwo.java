@@ -63,10 +63,18 @@ public class FragmentTwo extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getActivity(), "success", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "success", Toast.LENGTH_LONG).show();
                 name  = edt_Name.getText().toString();
                 price  = edt_Price.getText().toString();
                 phone  = edt_Phone.getText().toString();
+
+                String tried = "georg george";
+
+                if(tried.contains("george")) {
+                    Toast.makeText(getActivity(), "George is inside", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "am off", Toast.LENGTH_LONG).show();
+                }
 
                 editor = sharedpreferences.edit();
                 editor.putString(KEY_NAME, name);
