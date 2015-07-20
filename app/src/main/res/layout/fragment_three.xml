@@ -31,7 +31,7 @@ android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/desc"
-        android:paddingTop="20dp"
+        android:paddingTop="8dp"
         android:layout_below="@+id/places"
         android:orientation="vertical">
     <!-- Description Label  gravity specify Cursor Position -->

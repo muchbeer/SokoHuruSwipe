@@ -149,7 +149,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         btnselectpic = (Button)view.findViewById(R.id.btnCapturePicture);
         messageText  = (TextView)view.findViewById(R.id.txtTitle);
 
-        nextButton = (Button) view.findViewById(R.id.btn_image);
+
        uploadButton.setVisibility(View.GONE);
 
         
@@ -159,32 +159,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
         btnselectpic.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-// Create a new fragment and a transaction.
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                FragmentTwo newFragment = new FragmentTwo();
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-                // Commit the transaction
-                transaction.commit();
-                /**
-                Fragment newFragment = new FragmentTwo();
-                // consider using Java coding conventions (upper first char class names!!!)
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-                // Commit the transaction
-                transaction.commit();
-
-**/
-            }
-        });
         // progressBar.setVisibility(View.VISIBLE);
         upLoadServerUri = "http://sokouhuru.com/uploads.php";
         ImageView img= new ImageView(getActivity());

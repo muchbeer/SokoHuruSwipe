@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:paddingTop="80dp"
     android:id="@+id/fragment_container2"
     tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
@@ -16,8 +16,8 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         >
 
         <EditText
@@ -35,8 +35,8 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp">
         <EditText android:id="@+id/edt_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,8 +47,8 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp">
         <EditText android:id="@+id/edt_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,11 +56,13 @@
             />
     </android.support.design.widget.TextInputLayout>
 <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
     android:text="Send Data"
+    android:textColor="#009688"
     android:id="@+id/sendInformation"
-    android:onClick="Save"/>
+    android:onClick="Save"
+    android:background="@android:color/white"/>
 
 
 </LinearLayout>
