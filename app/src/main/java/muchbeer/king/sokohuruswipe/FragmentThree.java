@@ -61,6 +61,7 @@ public class FragmentThree extends Fragment {
  //   private static final String TAG = "Tell error";
 
     private static final String TAG = FragmentThree.class.getSimpleName();
+    private TextView txtDesc, txtLocation;
 
 
     public FragmentThree() {
@@ -84,7 +85,8 @@ public class FragmentThree extends Fragment {
         txtPrice = (TextView) view.findViewById(R.id.price);
         txtContact = (TextView) view.findViewById(R.id.contact);
         txtLink = (TextView) view.findViewById(R.id.link);
-
+        txtDesc = (TextView) view.findViewById(R.id.descr);
+        txtLocation = (TextView) view.findViewById(R.id.location);
 
 
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -118,31 +120,38 @@ public class FragmentThree extends Fragment {
                 image =    sharedpreferences.getString(KEY_LINK, "me");            // getting Long
                 //   pref.getString("key_name5", null);          // getting String
 
-                if (sharedpreferences.contains(KEY_NAME)) {
-                    txtName.setText(name);
-                }
-                if (sharedpreferences.contains(KEY_PRICE)) {
-                    txtPrice.setText(price);
-
-                }
-
-                if (sharedpreferences.contains(KEY_CONTACT)) {
-                    txtContact.setText(contact);
-                }
-               if (sharedpreferences.contains(KEY_LINK)) {
-                  txtLink.setText(image);
-                }
-               // txtLink.setText(position);
+                             // txtLink.setText(position);
 
                 //INSERTING STAFF
                 if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
-                        && !image.isEmpty() && !price.isEmpty()
-                        && !place.isEmpty() && !descr.isEmpty()) {
+                        && !image.isEmpty() && !place.isEmpty() && !descr.isEmpty()) {
                     registerUser();
                 } else {
-                    Toast.makeText(getActivity(),
-                            "Tafadhari Jaza sehemu ulizoacha wazi!", Toast.LENGTH_LONG)
-                            .show();
+
+                    if(name.isEmpty()) {
+                        txtName.setVisibility(View.VISIBLE);
+                        txtName.setText("Rudi kujaza jina la bidhaa");
+
+                    }if (price.isEmpty()){
+                        txtPrice.setVisibility(View.VISIBLE);
+                        txtPrice.setText("Rudi kujaza bei ya bidhaa");
+                    }if (contact.isEmpty()) {
+                        txtContact.setVisibility(View.VISIBLE);
+                        txtContact.setText("Rudi kujaza namba ya simu");
+                    }if (image.isEmpty()) {
+                        txtLink.setVisibility(View.VISIBLE);
+                        txtLink.setText("Rudi kuweka picha ya bidhaa");
+                    }if(place.isEmpty()) {
+                        txtLocation.setVisibility(View.VISIBLE);
+                        txtLocation.setText("Jaza sehemu ilipo bidhaa");
+                    }if (descr.isEmpty()) {
+                        txtDesc.setVisibility(View.VISIBLE);
+                        txtDesc.setText("Jaza maelezo kuhusu bidhaa");
+                    }
+                    else {
+                        txtName.setVisibility(View.GONE);
+                    }
+
                 }
             }
 
