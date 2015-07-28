@@ -81,6 +81,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
     public static final String KEY_LINK = "link";
     private TextView txtPercentage;
+    private String imagewthooutNull;
 
     @Override
     public void onClick(View view) {
@@ -386,10 +387,10 @@ dialog.dismiss();
                                 //  dialog.dismiss();
                                 String msg = " Umefanikiwa kuweka picha, sasa weka bidhaa.";
                                 messageText.setText(msg);
-                                //   messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
+                                  messageText.setTextColor(getActivity().getResources().getColor(R.color.colorSuccess));
 
                                 submitImage = "http://sokouhuru.com/uploads/" + fileName;
-
+                                imagewthooutNull = submitImage;
                                 //  Intent startIntent = new Intent(getActivity(), FragmentThree.class);
                                 // positionSearch = getActivity().position;
                                 //   startIntent.putExtra(TAG_POSITION, submitImage);
@@ -401,7 +402,7 @@ dialog.dismiss();
                                 sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                                 editor = sharedpreferences.edit();
 
-                                editor.putString(KEY_LINK, submitImage);  // Saving string
+                                editor.putString(KEY_LINK, imagewthooutNull);  // Saving string
                                 // Save the changes in SharedPreferences
                                 editor.commit(); // commit changes
 
@@ -426,6 +427,8 @@ dialog.dismiss();
 
                             //  progressBar.setVisibility(View.GONE);
                             messageText.setText("Tatizo la kimtandao, Jaribu tena.");
+                              messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
+
                             //  Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -441,6 +444,8 @@ dialog.dismiss();
 
                             //   progressBar.setVisibility(View.GONE);
                             messageText.setText("Tatizo la  kimtandao, Jaribu tena  ");
+                            messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
+
                             //   Toast.makeText(getActivity(), "Tatizo la mtandao ", Toast.LENGTH_SHORT).show();
                         }
                     });
