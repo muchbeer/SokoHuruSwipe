@@ -127,8 +127,8 @@ public class FragmentThree extends Fragment {
                              // txtLink.setText(position);
 
                 //INSERTING STAFF
-                if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
-                        && !image.isEmpty() && !place.isEmpty() && !descr.isEmpty()) {
+                if (name.length()>0 && price.length()>0 && contact.length()>0
+                        && image.length()>0 && place.length()>0 && descr.length()>0) {
                     registerUser();
                 } else {
 
@@ -137,7 +137,7 @@ public class FragmentThree extends Fragment {
                                 "hakikisha umeweka picha");
 
 
-                   // Toast.makeText(getActivity(), "I am doing fuckin bad", Toast.LENGTH_LONG).show();
+                 //  Toast.makeText(getActivity(), "The error is: " + image.length() , Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -313,6 +313,9 @@ public class FragmentThree extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
        Log.d("SOKO HURU", "OnDestroyView Fragment three");
+
+        editor.remove(KEY_LINK);
+        editor.commit();
     }
 
     @Override
