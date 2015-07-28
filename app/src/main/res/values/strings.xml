@@ -30,6 +30,7 @@
     <color name="navDrawer">#EEE</color>
     <color name="recyclerView">#FCE4EC</color>
     <color name="cardLine">#F06292</color>
+    <string name="title_activity_main_activity_pager">MainActivityPager</string>
 
 
 </resources>

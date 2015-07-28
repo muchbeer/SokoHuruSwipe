@@ -1,12 +1,16 @@
 package muchbeer.king.sokohuruswipe;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOutOfMemoryException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +50,8 @@ public class FragmentThree extends Fragment {
     public static final String KEY_CONTACT = "contact";
     public static final String KEY_LINK = "link";
     private TextView txtName,txtPrice, txtContact,txtLink;
-    private String name,price,contact,image;
+    private String name,price,contact;
+    private String image;
 
     private static final int SHARING_CODE = 1;
     private static final String TAG_POSITION = "position";
@@ -62,7 +67,11 @@ public class FragmentThree extends Fragment {
 
     private static final String TAG = FragmentThree.class.getSimpleName();
     private TextView txtDesc, txtLocation;
-
+    final static String ARG_STRING = "name";
+    private String putName;
+     String getName, getPrice, getContact;
+    String naming = "jo";
+    private String itemName;
 
     public FragmentThree() {
         // Required empty public constructor
@@ -76,20 +85,12 @@ public class FragmentThree extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_three, container, false);
 
-        edtPlace = (EditText) view.findViewById(R.id.edt_place);
+
+       edtPlace = (EditText) view.findViewById(R.id.edt_place);
         edtDesc = (EditText) view.findViewById(R.id.edt_desc);
+    txtName = (TextView) view.findViewById(R.id.name);
 
-
-
-        txtName = (TextView) view.findViewById(R.id.name);
-        txtPrice = (TextView) view.findViewById(R.id.price);
-        txtContact = (TextView) view.findViewById(R.id.contact);
-        txtLink = (TextView) view.findViewById(R.id.link);
-        txtDesc = (TextView) view.findViewById(R.id.descr);
-        txtLocation = (TextView) view.findViewById(R.id.location);
-
-
-        sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+              sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         editor = sharedpreferences.edit();
 
@@ -117,9 +118,12 @@ public class FragmentThree extends Fragment {
                 name  = sharedpreferences.getString(KEY_NAME, "");         // getting boolean
                 price =   sharedpreferences.getString(KEY_PRICE, "");             // getting Integer
                 contact =   sharedpreferences.getString(KEY_CONTACT, "");           // getting Float
-                image =    sharedpreferences.getString(KEY_LINK, "me");            // getting Long
+                image =    sharedpreferences.getString(KEY_LINK, "");            // getting Long
                 //   pref.getString("key_name5", null);          // getting String
+              //  txtName.setText(putName);
 
+
+               // txtName.setText(itemName);
                              // txtLink.setText(position);
 
                 //INSERTING STAFF
@@ -128,30 +132,12 @@ public class FragmentThree extends Fragment {
                     registerUser();
                 } else {
 
-                    if(name.isEmpty()) {
-                        txtName.setVisibility(View.VISIBLE);
-                        txtName.setText("Rudi kujaza jina la bidhaa");
 
-                    }if (price.isEmpty()){
-                        txtPrice.setVisibility(View.VISIBLE);
-                        txtPrice.setText("Rudi kujaza bei ya bidhaa");
-                    }if (contact.isEmpty()) {
-                        txtContact.setVisibility(View.VISIBLE);
-                        txtContact.setText("Rudi kujaza namba ya simu");
-                    }if (image.isEmpty()) {
-                        txtLink.setVisibility(View.VISIBLE);
-                        txtLink.setText("Rudi kuweka picha ya bidhaa");
-                    }if(place.isEmpty()) {
-                        txtLocation.setVisibility(View.VISIBLE);
-                        txtLocation.setText("Jaza sehemu ilipo bidhaa");
-                    }if (descr.isEmpty()) {
-                        txtDesc.setVisibility(View.VISIBLE);
-                        txtDesc.setText("Jaza maelezo kuhusu bidhaa");
-                    }
-                    else {
-                        txtName.setVisibility(View.GONE);
-                    }
+                        txtName.setText("Tafadhari, jaza sehemu zilizowazi kisha uzitunze pia " +
+                                "hakikisha umeweka picha");
 
+
+                   // Toast.makeText(getActivity(), "I am doing fuckin bad", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -159,9 +145,17 @@ public class FragmentThree extends Fragment {
         });
 
 
-
         return view;
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+
+    }
+
 
     /**
      * Function to store user in MySQL database will post params(tag, name,
@@ -265,6 +259,14 @@ public class FragmentThree extends Fragment {
         AppController.getInstance().addToRequestQueue(strReq);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+    }
+
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -275,16 +277,65 @@ public class FragmentThree extends Fragment {
             pDialog.dismiss();
     }
 
+
+    // newInstance constructor for creating fragment with arguments
+    public static FragmentThree newInstance(String location, String descr) {
+        FragmentThree fragmentThird = new FragmentThree();
+        Bundle args = new Bundle();
+        // args.putInt("someInt", page);
+        args.putString("location", location);
+        args.putString("description", descr);
+        fragmentThird.setArguments(args);
+        return fragmentThird;
+    }
+
     @Override
     public void onDestroy() {
+
         super.onDestroy();
+        Log.d("SOKO HURU", "On Destroy FragmentThree");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        editor.remove(KEY_LINK); // will delete key email
-        editor.commit();
+       Log.d("SOKO HURU", "On Detach FragmentThree");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("SOKO HURU", "OnPause Fragment three");
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+       Log.d("SOKO HURU", "OnDestroyView Fragment three");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SOKO HURU", "OnStart Fragment three");
+
+        Bundle args = getArguments();
+        itemName =  args.getString("item","");
+        txtName.setText(itemName);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("SOKO HURU", "OnResume Fragment three");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("SOKO HURU", "OnStop Fragment three");
 
     }
 }

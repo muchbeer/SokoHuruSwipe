@@ -57,14 +57,34 @@
             android:inputType="phone"
             />
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/txTitle"
+
+    />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txPrice"
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txContact"
+
+        />
+
 <Button
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:text="Send Data"
-    android:textColor="#009688"
+    android:layout_height="wrap_content"
+    android:textColor="@android:color/white"
     android:id="@+id/sendInformation"
-    android:onClick="Save"
-    android:background="@android:color/white"/>
+    android:text="Tunza taarifa zako"
+    android:background="#009688"
+    />
 
 
 </LinearLayout>

@@ -4,14 +4,15 @@ import java.util.Locale;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import muchbeer.king.sokohuruswipe.connectdata.Communicator;
+
+import static muchbeer.king.sokohuruswipe.FragmentThree.*;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -50,8 +55,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-
-        // Create the adapter that will return a fragment for each of the three
+         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -68,6 +72,8 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -75,6 +81,7 @@ public class MainActivity extends ActionBarActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
+
             super(fm);
         }
 
@@ -86,10 +93,16 @@ public class MainActivity extends ActionBarActivity {
             Fragment fragment = new Fragment();
             switch (position) {
                 case 0:
+
+                    Log.d("SOKO HURU", "Fragment One");
+
                     return fragment = new FragmentOne();
                 case 1:
+                    Log.d("SOKO HURU", "Fragment Two");
+                    //   articleFrag.updateArticleView(position);
                     return fragment = new FragmentTwo();
                 case 2:
+                    Log.d("SOKO HURU", "Fragment Three");
                     return fragment = new FragmentThree();
                 default:
                     break;
@@ -108,10 +121,14 @@ public class MainActivity extends ActionBarActivity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
+                    Log.d("SOKO HURU", "Picha sehemu ya juu");
                     return getString(R.string.title_section1).toUpperCase(l);
                 case 1:
+                    Log.d("SOKO HURU", "Bidhaa sehemu ya juu");
+
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
+                    Log.d("SOKO HURU", "Maelezo sehemu ya juu");
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;

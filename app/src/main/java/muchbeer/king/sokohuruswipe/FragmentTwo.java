@@ -6,16 +6,40 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.zip.CheckedInputStream;
+
+import muchbeer.king.sokohuruswipe.connectdata.Communicator;
+
 public class FragmentTwo extends Fragment {
+
+    OnHeadlineSelectedListener mCallback;
+
+    // The container Activity must implement this interface so the frag can deliver messages
+    public interface OnHeadlineSelectedListener {
+        /** Called by HeadlinesFragment when a list item is selected */
+        public void sendToFragmentThree(String  name);
+    }
+
+    //Communintation btn Fragment
+
+ //   commInterfaceData mCallback;
+    private Button sendData;
+
+    String getNam, getPric, getContac;
+
     //Fragment SharedPrefences
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
@@ -26,7 +50,8 @@ public class FragmentTwo extends Fragment {
 
     EditText edt_Name, edt_Price, edt_Phone;
     private String phone,price,name;
-
+    private TextView txtTitle, txPrice, txContact;
+    String pete;
 
     public FragmentTwo() {
         // Required empty public constructor
@@ -38,54 +63,209 @@ public class FragmentTwo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
      View view = inflater.inflate(R.layout.fragment_two, container, false);
+
+
+
         sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
+
 
         edt_Name = (EditText) view.findViewById(R.id.edt_name);
         edt_Price = (EditText) view.findViewById(R.id.edt_price);
         edt_Phone = (EditText) view.findViewById(R.id.edt_phone);
 
+//
 
-        name  = edt_Name.getText().toString();
-        price  = edt_Price.getText().toString();
-        phone  = edt_Phone.getText().toString();
+        txtTitle = (TextView) view.findViewById(R.id.txTitle);
+        txPrice = (TextView) view.findViewById(R.id.txPrice);
+        txContact = (TextView) view.findViewById(R.id.txContact);
 
-        editor = sharedpreferences.edit();
-        editor.putString(KEY_NAME, name);
-        editor.putString(KEY_PRICE, price);
-        editor.putString(KEY_CONTACT, phone);
-        editor.commit();
+        sendData = (Button) view.findViewById(R.id.sendInformation);
 
-
-        Button  btnSend = (Button) view.findViewById(R.id.sendInformation);
-
-
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        sendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //Toast.makeText(getActivity(), "success", Toast.LENGTH_LONG).show();
-                name  = edt_Name.getText().toString();
-                price  = edt_Price.getText().toString();
-                phone  = edt_Phone.getText().toString();
-
-                String tried = "georg george";
-
-                if(tried.contains("george")) {
-                    Toast.makeText(getActivity(), "George is inside", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "am off", Toast.LENGTH_LONG).show();
-                }
-
-                editor = sharedpreferences.edit();
+                Toast.makeText(getActivity(), "Get Application", Toast.LENGTH_LONG).show();
                 editor.putString(KEY_NAME, name);
                 editor.putString(KEY_PRICE, price);
                 editor.putString(KEY_CONTACT, phone);
+
                 editor.commit();
+
+                //   mCallback.onFragmentThree("Check met");
             }
         });
+
+        TextWatcher watcher = new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                name  = edt_Name.getText().toString();
+                txtTitle.setText(name);
+                getNam = txtTitle.getText().toString();
+
+
+                //   String cid=id.getText().toString();
+                Fragment fr=new FragmentThree();
+                FragmentManager fm=getFragmentManager();
+                FragmentTransaction ft=fm.beginTransaction();
+                Bundle args = new Bundle();
+                args.putString(KEY_NAME, name);
+
+                fr.setArguments(args);
+                ft.replace(R.id.fragment_container2, fr);
+                ft.commit();
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        };
+
+        edt_Name.addTextChangedListener(watcher);
+
+        TextWatcher watcher2 = new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                price  = edt_Price.getText().toString();
+
+                txPrice.setText(edt_Price.getText().toString());
+                getPric = txPrice.getText().toString();
+
+                Fragment fr=new FragmentThree();
+                FragmentManager fm=getFragmentManager();
+                FragmentTransaction ft=fm.beginTransaction();
+                Bundle args = new Bundle();
+                args.putString(KEY_PRICE, price);
+
+                fr.setArguments(args);
+                ft.replace(R.id.fragment_container2, fr);
+                ft.commit();
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        };
+
+        edt_Price.addTextChangedListener(watcher2);
+
+        TextWatcher watcher3 = new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                phone  = edt_Phone.getText().toString();
+                txContact.setText(edt_Phone.getText().toString());
+                getContac = txContact.getText().toString();
+
+
+
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        };
+
+        edt_Phone.addTextChangedListener(watcher3);
+
+
+
 //Shared me
 
         return  view;
+
+    }
+
+    // newInstance constructor for creating fragment with arguments
+    public static FragmentTwo newInstance(String nameItem, String price, String contact) {
+        FragmentTwo fragmentSecond = new FragmentTwo();
+        Bundle args = new Bundle();
+nameItem = "George";
+        // args.putInt("someInt", page);
+        args.putString("item", nameItem);
+        args.putString("price", price);
+        args.putString("contact", contact);
+
+        fragmentSecond.setArguments(args);
+        return fragmentSecond;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("SOKO HRU", "This is onPause FragmentTwo");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("SOKO HRU", "This is onDestroyView FragmentTwo");
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        FragmentThree fragmentThree = new FragmentThree();
+        Bundle args = new Bundle();
+       String nameItem = "George";
+        // args.putInt("someInt", page);
+     //   args.putString("item", nameItem);
+      //  args.putString("price", price);
+       // args.putString("contact", contact);
+
+      //  setArguments(args);
+
+    }
+
+
+    @Override
+    public void onStop() {
+        Log.d("SOKO HRU", "This is onStop FragmentTwo");
+        super.onStop();
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("SOKO HRU", "This Detach FragmentTwo");
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SOKO HRU", "This is onStart FragmentTwo");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("SOKO HURU", "This onResume FragmentTwo");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("SOKO HURU", "This is onDestroy FragmentTwo");
 
     }
 

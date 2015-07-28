@@ -59,13 +59,13 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
     int pStatus = 0;
     private String upLoadServerUri = null;
-    private String imagepath=null;
+    private String imagepath;
 
     private Handler mHandler = new Handler();
 
 
     private String fileName;
-    private String submitImage;
+    private String submitImage = null;
     private Button nextButton;
 
     //Fragment SharedPrefences
@@ -86,6 +86,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Complete action using"), 1);
         }
+
+        /**
         else if (view==uploadButton) {
 
             // progressBar = new ProgressBar(view.getContext());
@@ -95,6 +97,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
             uploadPicha();
         }
+
+         **/
     }
 
     private void uploadPicha() {
@@ -138,6 +142,16 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+    // newInstance constructor for creating fragment with arguments
+    public static FragmentOne newInstance( String imagepath) {
+        FragmentOne fragmentFirst = new FragmentOne();
+        Bundle args = new Bundle();
+       // args.putInt("someInt", page);
+        args.putString("imagePath", imagepath);
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,12 +163,12 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 //Shared me
 
 
-        uploadButton = (Button) view.findViewById(R.id.upLoadButton);
+      //  uploadButton = (Button) view.findViewById(R.id.upLoadButton);
         btnselectpic = (Button)view.findViewById(R.id.btnCapturePicture);
         messageText  = (TextView)view.findViewById(R.id.txtTitle);
 
 
-       uploadButton.setVisibility(View.GONE);
+//       uploadButton.setVisibility(View.GONE);
 
         
         imageview = (ImageView)view.findViewById(R.id.imageViewPic);
@@ -162,7 +176,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         // desc=(EditText)findViewById(R.id.etdesc);
 
         btnselectpic.setOnClickListener(this);
-        uploadButton.setOnClickListener(this);
+      //  uploadButton.setOnClickListener(this);
 
         // progressBar.setVisibility(View.VISIBLE);
         upLoadServerUri = "http://sokouhuru.com/uploads.php";
@@ -350,7 +364,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                           editor.commit(); // commit changes
 
 
-                            Toast.makeText(getActivity(), "Umefanikiwa kupakua." + fileName, Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), "Umefanikiwa kupakua." + fileName, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -369,8 +383,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                     public void run() {
 
                         //  progressBar.setVisibility(View.GONE);
-                        messageText.setText("Jaribu tena Kupakua :  script url.");
-                        Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
+                        messageText.setText("Tatizo la kimtandao, Jaribu tena.");
+                      //  Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -384,8 +398,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                     public void run() {
 
                         //   progressBar.setVisibility(View.GONE);
-                        messageText.setText("Jaribu tena kupakua ");
-                        Toast.makeText(getActivity(), "Tatizo la mtandao ", Toast.LENGTH_SHORT).show();
+                        messageText.setText("Tatizo la  kimtandao, Jaribu tena  ");
+                     //   Toast.makeText(getActivity(), "Tatizo la mtandao ", Toast.LENGTH_SHORT).show();
                     }
                 });
                 Log.e("Upload server Exception", "Exception : " + e.getMessage(), e);
@@ -398,6 +412,12 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -405,19 +425,47 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
+
         super.onDestroy();
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
+        Log.d("SOKO HURU", "On Destroy FragmentOne");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d("SOKO HURU", "On Detach FragmentOne");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("SOKO HURU", "OnPause FragmentOne");
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("SOKO HURU", "OnDestroyView FragmentOne");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SOKO HURU", "OnStart FragmentOne");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("SOKO HURU", "OnResume FragmentOne");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("SOKO HURU", "OnStop FragmentOne");
 
     }
 }

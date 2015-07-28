@@ -1,12 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 android:orientation="vertical"
-
+    android:id="@+id/container3"
     tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
 <LinearLayout
@@ -63,56 +64,15 @@ android:orientation="vertical"
         android:orientation="vertical"
         android:id="@+id/hiddentext">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/link"
-            android:visibility="gone"
-            android:textColor="#E91E63"
-            android:textSize="14dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/name"
             android:text="name"
-            android:visibility="gone"
-            android:textColor="#E91E63"
-            android:textSize="14dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/price"
-            android:text="price"
-            android:visibility="gone"
-            android:textColor="#E91E63"
-            android:textSize="14dp"/>
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/contact"
-        android:text="contact"
-        android:visibility="gone"
-            android:textColor="#E91E63"
-        android:textSize="14dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/location"
-            android:text="contact"
-            android:visibility="gone"
             android:textColor="#E91E63"
             android:textSize="14dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/descr"
-            android:text="contact"
-            android:visibility="gone"
-            android:textColor="#E91E63"
-            android:textSize="14dp"/>
     </LinearLayout>
 
         <!-- Signup Button -->
