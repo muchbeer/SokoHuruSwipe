@@ -40,7 +40,7 @@ public class MainActivityPager extends ActionBarActivity {
 
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
-        private  int NUM_ITEMS = 3;
+        private  int NUM_ITEMS = 2;
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -58,10 +58,11 @@ public class MainActivityPager extends ActionBarActivity {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return FragmentOne.newInstance("Picha");
+
+
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return FragmentTwo.newInstance("Bidhaa", "Bei", "Namba");
-                case 2: // Fragment # 1 - This will show SecondFragment
                     return FragmentThree.newInstance("mahali", "maelezo");
+
                 default:
                     return null;
             }
@@ -79,9 +80,7 @@ public class MainActivityPager extends ActionBarActivity {
                     Log.d("SOKO HURU", "Bidhaa sehemu ya juu");
 
                     return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    Log.d("SOKO HURU", "Maelezo sehemu ya juu");
-                    return getString(R.string.title_section3).toUpperCase(l);
+
             }
             return null;
         }        }

@@ -6,11 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="80dp"
+    android:paddingTop="14dp"
     android:id="@+id/fragment_container2"
     tools:context="muchbeer.king.sokohuruswipe.FragmentThree">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txTitle"
+        android:padding="8dp"
+        android:textColor="@color/imageColor"
+        />
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.design.widget.TextInputLayout
@@ -58,31 +64,44 @@
             />
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/txTitle"
-
-    />
-    <TextView
+    <!-- Mahali ya bidhaa Label -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txPrice"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/edt_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mahali ilipo Bidhaa"/>
+    </android.support.design.widget.TextInputLayout>
 
-        />
-    <TextView
+    <!-- Description Label  gravity specify Cursor Position -->
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txContact"
 
-        />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/edt_desc"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Maelezo kuhusu bidhaa"
+            android:lines="2"
+            android:scrollbars="vertical"
+            android:gravity="top|left" />
+    </android.support.design.widget.TextInputLayout>
+
+
 
 <Button
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@android:color/white"
     android:id="@+id/sendInformation"
-    android:text="Tunza taarifa zako"
+    android:text="Tanganza Bidhaa"
     android:background="#009688"
     />
 

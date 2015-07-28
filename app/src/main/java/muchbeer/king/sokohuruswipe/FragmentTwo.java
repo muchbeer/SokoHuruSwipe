@@ -70,15 +70,11 @@ public class FragmentTwo extends Fragment {
         editor = sharedpreferences.edit();
 
 
-        edt_Name = (EditText) view.findViewById(R.id.edt_name);
-        edt_Price = (EditText) view.findViewById(R.id.edt_price);
-        edt_Phone = (EditText) view.findViewById(R.id.edt_phone);
-
 //
 
         txtTitle = (TextView) view.findViewById(R.id.txTitle);
-        txPrice = (TextView) view.findViewById(R.id.txPrice);
-        txContact = (TextView) view.findViewById(R.id.txContact);
+       // txPrice = (TextView) view.findViewById(R.id.txPrice);
+      //  txContact = (TextView) view.findViewById(R.id.txContact);
 
         sendData = (Button) view.findViewById(R.id.sendInformation);
 
@@ -87,90 +83,13 @@ public class FragmentTwo extends Fragment {
             public void onClick(View view) {
 
                 Toast.makeText(getActivity(), "Get Application", Toast.LENGTH_LONG).show();
-                editor.putString(KEY_NAME, name);
-                editor.putString(KEY_PRICE, price);
-                editor.putString(KEY_CONTACT, phone);
-
-                editor.commit();
+            //     editor.commit();
 
                 //   mCallback.onFragmentThree("Check met");
             }
         });
 
-        TextWatcher watcher = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                name  = edt_Name.getText().toString();
-                txtTitle.setText(name);
-                getNam = txtTitle.getText().toString();
 
-
-                //   String cid=id.getText().toString();
-                Fragment fr=new FragmentThree();
-                FragmentManager fm=getFragmentManager();
-                FragmentTransaction ft=fm.beginTransaction();
-                Bundle args = new Bundle();
-                args.putString(KEY_NAME, name);
-
-                fr.setArguments(args);
-                ft.replace(R.id.fragment_container2, fr);
-                ft.commit();
-
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        };
-
-        edt_Name.addTextChangedListener(watcher);
-
-        TextWatcher watcher2 = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                price  = edt_Price.getText().toString();
-
-                txPrice.setText(edt_Price.getText().toString());
-                getPric = txPrice.getText().toString();
-
-                Fragment fr=new FragmentThree();
-                FragmentManager fm=getFragmentManager();
-                FragmentTransaction ft=fm.beginTransaction();
-                Bundle args = new Bundle();
-                args.putString(KEY_PRICE, price);
-
-                fr.setArguments(args);
-                ft.replace(R.id.fragment_container2, fr);
-                ft.commit();
-
-
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        };
-
-        edt_Price.addTextChangedListener(watcher2);
-
-        TextWatcher watcher3 = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                phone  = edt_Phone.getText().toString();
-                txContact.setText(edt_Phone.getText().toString());
-                getContac = txContact.getText().toString();
-
-
-
-
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        };
-
-        edt_Phone.addTextChangedListener(watcher3);
 
 
 
@@ -205,6 +124,12 @@ nameItem = "George";
     public void onDestroyView() {
         super.onDestroyView();
         Log.d("SOKO HRU", "This is onDestroyView FragmentTwo");
+      //  editor.remove(KEY_NAME);
+      //  editor.remove(KEY_CONTACT);
+     //   editor.remove(KEY_PRICE);
+     //   editor.commit();
+
+
 
     }
 
@@ -245,8 +170,7 @@ nameItem = "George";
         super.onDetach();
         Log.d("SOKO HRU", "This Detach FragmentTwo");
 
-
-    }
+          }
 
     @Override
     public void onStart() {

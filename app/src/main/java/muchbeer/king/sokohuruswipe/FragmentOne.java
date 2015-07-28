@@ -345,6 +345,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                             dialog.dismiss();
                             String msg = " Umefanikiwa kuweka picha, sasa weka bidhaa.";
                             messageText.setText(msg);
+                         //   messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
 
                             submitImage = "http://sokouhuru.com/uploads/" + fileName;
 

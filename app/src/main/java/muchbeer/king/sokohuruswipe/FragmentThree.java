@@ -61,7 +61,7 @@ public class FragmentThree extends Fragment {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
-    private EditText edtPlace, edtDesc;
+    private EditText edtPlace, edtDesc, edtName, edtPrice, edtContact;
     private String place, descr;
  //   private static final String TAG = "Tell error";
 
@@ -83,16 +83,17 @@ public class FragmentThree extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view =  inflater.inflate(R.layout.fragment_three, container, false);
+        View view =  inflater.inflate(R.layout.fragment_two, container, false);
 
 
        edtPlace = (EditText) view.findViewById(R.id.edt_place);
         edtDesc = (EditText) view.findViewById(R.id.edt_desc);
-    txtName = (TextView) view.findViewById(R.id.name);
+    txtName = (TextView) view.findViewById(R.id.txTitle);
+        edtName = (EditText) view.findViewById(R.id.edt_name);
+        edtPrice = (EditText) view.findViewById(R.id.edt_price);
+        edtContact = (EditText) view.findViewById(R.id.edt_phone);
 
-              sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        editor = sharedpreferences.edit();
 
 
         //INSERTTING RECORDING
@@ -106,19 +107,23 @@ public class FragmentThree extends Fragment {
         // Check if user is already logged in or not
 
 
-        Button btnSubmit = (Button) view.findViewById(R.id.btn_submit);
+        Button btnSubmit = (Button) view.findViewById(R.id.sendInformation);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+                editor = sharedpreferences.edit();
+
                 place  = edtPlace.getText().toString();
                 descr  = edtDesc.getText().toString();
+                name = edtName.getText().toString();
+                price = edtPrice.getText().toString();
+                contact =edtContact.getText().toString();
 
-                name  = sharedpreferences.getString(KEY_NAME, "");         // getting boolean
-                price =   sharedpreferences.getString(KEY_PRICE, "");             // getting Integer
-                contact =   sharedpreferences.getString(KEY_CONTACT, "");           // getting Float
-                image =    sharedpreferences.getString(KEY_LINK, "");            // getting Long
+                  image =    sharedpreferences.getString(KEY_LINK, "");            // getting Long
                 //   pref.getString("key_name5", null);          // getting String
               //  txtName.setText(putName);
 
@@ -127,9 +132,12 @@ public class FragmentThree extends Fragment {
                              // txtLink.setText(position);
 
                 //INSERTING STAFF
-                if (name.length()>0 && price.length()>0 && contact.length()>0
-                        && image.length()>0 && place.length()>0 && descr.length()>0) {
+                if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
+                        && image.length()>0 && !place.isEmpty() && !descr.isEmpty()) {
                     registerUser();
+                    editor.clear();
+                   editor.commit();
+
                 } else {
 
 
@@ -137,7 +145,7 @@ public class FragmentThree extends Fragment {
                                 "hakikisha umeweka picha");
 
 
-                 //  Toast.makeText(getActivity(), "The error is: " + image.length() , Toast.LENGTH_LONG).show();
+                  Toast.makeText(getActivity(), "The error is: " + image , Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -299,7 +307,7 @@ public class FragmentThree extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-       Log.d("SOKO HURU", "On Detach FragmentThree");
+        Log.d("SOKO HURU", "On Detach FragmentThree");
 
     }
 
@@ -312,20 +320,16 @@ public class FragmentThree extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-       Log.d("SOKO HURU", "OnDestroyView Fragment three");
+        Log.d("SOKO HURU", "OnDestroyView Fragment three");
 
-        editor.remove(KEY_LINK);
-        editor.commit();
-    }
+       }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.d("SOKO HURU", "OnStart Fragment three");
 
-        Bundle args = getArguments();
-        itemName =  args.getString("item","");
-        txtName.setText(itemName);
+
     }
 
     @Override
