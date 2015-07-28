@@ -1,6 +1,7 @@
 package muchbeer.king.sokohuruswipe;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -52,14 +54,18 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     private Button uploadButton, btnselectpic;
     private ImageView imageview;
     private int serverResponseCode = 0;
-    private ProgressDialog dialog = null;
     private ProgressBar progressBar;
+
+    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+    private ProgressDialog dialog;
 
     int bytesRead, count, bytesAvailable, bufferSize;
 
     int pStatus = 0;
     private String upLoadServerUri = null;
     private String imagepath;
+    long totalSize = 0;
+
 
     private Handler mHandler = new Handler();
 
@@ -74,6 +80,7 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
 
 
     public static final String KEY_LINK = "link";
+    private TextView txtPercentage;
 
     @Override
     public void onClick(View view) {
@@ -102,12 +109,14 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     }
 
     private void uploadPicha() {
+
+        /**
         dialog = new ProgressDialog(getActivity(),
                 R.style.AppTheme_Dark_Dialog);
         dialog.setIndeterminate(true);
         dialog.setMessage("Tafadhari subiri...");
         dialog.show();
-
+**/
         //  messageText.setText("uploading started.....");
         new Thread(new Runnable() {
             public void run() {
@@ -118,10 +127,9 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
                 new Thread(new Runnable() {
                     public void run() {
                         while (serverResponseCode != 200) {
-                            uploadFile(imagepath);
-                            //  mProgressStatus = doWork();
-                            //  messagePercentage.setText(serverResponseCode);
-                            // Update the progress bar
+
+                            // uploading the file to server
+                            new DownloadFileAsync().execute();
                             mHandler.post(new Runnable() {
                                 public void run() {
                                    // progressBar.setProgress(serverResponseCode);
@@ -173,6 +181,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         
         imageview = (ImageView)view.findViewById(R.id.imageViewPic);
         title=(EditText) view.findViewById(R.id.title);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        txtPercentage = (TextView) view.findViewById(R.id.txtPercentage);
         // desc=(EditText)findViewById(R.id.etdesc);
 
         btnselectpic.setOnClickListener(this);
@@ -204,11 +214,16 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
     private void saveUploadPicture(Intent data) {
         Uri selectedImageUri = data.getData();
         imagepath = getPath(selectedImageUri);
-        Bitmap bitmap= BitmapFactory.decodeFile(imagepath);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+       // options.inJustDecodeBounds = true;
+        options.inSampleSize= 4;
+        Bitmap bitmap= BitmapFactory.decodeFile(imagepath, options);
         imageview.setImageBitmap(bitmap);
         // messageText.setText("Bofya Pakua kutunza picha.");
        // uploadButton.setVisibility(View.VISIBLE);
-        uploadPicha();
+     //   uploadPicha();
+        new DownloadFileAsync().execute();
+
     }
 
     public String getPath(Uri uri) {
@@ -219,202 +234,234 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         return cursor.getString(column_index);
     }
 
-    public int uploadFile(String sourceFileUri) {
 
-        //sourceFileUri.replace(sourceFileUri, "ashifaq");
-        //
+    class DownloadFileAsync extends AsyncTask<Void, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+      
+            super.onPreExecute();
 
-        int day, month, year;
-        int second, minute, hour;
-        GregorianCalendar date = new GregorianCalendar();
-
-        day = date.get(Calendar.DAY_OF_MONTH);
-        month = date.get(Calendar.MONTH);
-        year = date.get(Calendar.YEAR);
-
-        second = date.get(Calendar.SECOND);
-        minute = date.get(Calendar.MINUTE);
-        hour = date.get(Calendar.HOUR);
-
-        String name=(hour+""+minute+""+second+""+day+""+(month+1)+""+year);
-        String tag=name+".jpg";
-        fileName = sourceFileUri.replace(sourceFileUri,tag);
-
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        String lineEnd = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-
-
-        long total =0;
-        int percentage;
-        byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
-        File sourceFile = new File(sourceFileUri);
-
-        if (!sourceFile.isFile()) {
-
-            dialog.dismiss();
-            // progressBar.setVisibility(View.GONE);
-
-            Log.e("uploadFile", "Source File not exist :" + imagepath);
-
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    messageText.setText("File halipo :" + imagepath);
-                }
-            });
-
-            return 0;
-
+            dialog = new ProgressDialog(getActivity(),
+                    R.style.AppTheme_Dark_Dialog);
+            dialog.setIndeterminate(true);
+            dialog.setMessage("Tafadhari subiri...");
+            dialog.setCancelable(true);
+            dialog.show();
+            //return dialog;
         }
-        else
-        {
-            try {
-
-                // open a URL connection to the Servlet
-                FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                URL url = new URL(upLoadServerUri);
-
-                // Open a HTTP  connection to  the URL
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setDoInput(true); // Allow Inputs
-                conn.setDoOutput(true); // Allow Outputs
-                conn.setUseCaches(false); // Don't use a Cached Copy
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                conn.setRequestProperty("uploaded_file", fileName);
-
-
-                dos = new DataOutputStream(conn.getOutputStream());
-
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                        + fileName + "\"" + lineEnd);
-
-                dos.writeBytes(lineEnd);
+        @Override
+        protected String doInBackground(Void... voids) {
+            int count;
+            uploadFile();
+            return null;
+        }
 
 
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
-                // create a buffer of  maximum size
-                bytesAvailable = fileInputStream.available();
+dialog.dismiss();
+        }
 
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
+        public int uploadFile() {
 
-                // read file and write it into form...
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            //sourceFileUri.replace(sourceFileUri, "ashifaq");
 
-                //  int lengthOfFile = conn.getContentLength();
-                while ((count = bytesRead) > 0) {
+            String sourceFileUri = imagepath;
+            int day, month, year;
+            int second, minute, hour;
+            GregorianCalendar date = new GregorianCalendar();
 
-                    total +=count;
+            day = date.get(Calendar.DAY_OF_MONTH);
+            month = date.get(Calendar.MONTH);
+            year = date.get(Calendar.YEAR);
 
-                    //   percentage = (int) (((total)/lengthOfFile)*100);
-                    dos.write(buffer, 0, bufferSize);
+            second = date.get(Calendar.SECOND);
+            minute = date.get(Calendar.MINUTE);
+            hour = date.get(Calendar.HOUR);
+
+            String name=(hour+""+minute+""+second+""+day+""+(month+1)+""+year);
+            String tag=name+".jpg";
+            fileName = sourceFileUri.replace(sourceFileUri,tag);
+
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+
+
+            long total =0;
+            int percentage;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            File sourceFile = new File(sourceFileUri);
+
+            byte data[] = new byte[1024];
+
+            if (!sourceFile.isFile()) {
+
+                //dialog.dismiss();
+                // progressBar.setVisibility(View.GONE);
+
+                Log.e("uploadFile", "Source File not exist :" + imagepath);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        messageText.setText("File halipo :" + imagepath);
+                    }
+                });
+
+                return 0;
+
+            }
+            else
+            {
+                try {
+
+                    // open a URL connection to the Servlet
+                    FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                    URL url = new URL(upLoadServerUri);
+
+                    // Open a HTTP  connection to  the URL
+                    conn = (HttpURLConnection) url.openConnection();
+
+                    //  conn.connect();
+                    //   int lengthOfFile = conn.getContentLength();
+                    // Log.d("ANDROID ASYNC", "Length of file: " + lengthOfFile);
+                    conn.setDoInput(true); // Allow Inputs
+                    conn.setDoOutput(true); // Allow Outputs
+                    conn.setUseCaches(false); // Don't use a Cached Copy
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Connection", "Keep-Alive");
+                    conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                    conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                    conn.setRequestProperty("uploaded_file", fileName);
+
+
+                    dos = new DataOutputStream(conn.getOutputStream());
+
+                    dos.writeBytes(twoHyphens + boundary + lineEnd);
+                    dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                            + fileName + "\"" + lineEnd);
+
+                    dos.writeBytes(lineEnd);
+
+
+
+
+                    // create a buffer of  maximum size
                     bytesAvailable = fileInputStream.available();
+
                     bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    buffer = new byte[bufferSize];
+
+                    // read file and write it into form...
                     bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-                    //   publishProgress
-                    //      messagePercentage.setText("I am coming home");
 
-                }
+                    //  int lengthOfFile = conn.getContentLength();
 
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+                    // send multipart form data necesssary after file data...
+                    dos.writeBytes(lineEnd);
+                    dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
-                // Responses from the server (code and message)
-                serverResponseCode = conn.getResponseCode();
-                String serverResponseMessage = conn.getResponseMessage();
+                    // Responses from the server (code and message)
+                    serverResponseCode = conn.getResponseCode();
+                    String serverResponseMessage = conn.getResponseMessage();
+                //    byte data[] = new byte[1024];
+//int length = conn.getContentLength();
 
-                Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode);
+                    Log.i("uploadFile", "HTTP Response is : "
+                            + serverResponseMessage + ": " + serverResponseCode);
 
-                if(serverResponseCode == 200){
+                    if(serverResponseCode == 200){
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                int num = 100;
+                                // progressBar.setVisibility(View.GONE);
+                                // messageText.setText(msg);
+                                //  dialog.dismiss();
+                                String msg = " Umefanikiwa kuweka picha, sasa weka bidhaa.";
+                                messageText.setText(msg);
+                                //   messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
+
+                                submitImage = "http://sokouhuru.com/uploads/" + fileName;
+
+                                //  Intent startIntent = new Intent(getActivity(), FragmentThree.class);
+                                // positionSearch = getActivity().position;
+                                //   startIntent.putExtra(TAG_POSITION, submitImage);
+                                //    startIntent.putExtra(TAG_POSITION2, positionSearch);
+                                //    startActivityForResult(startIntent, SHARING_CODE);
+                                //Storing the links
+
+
+                                sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                                editor = sharedpreferences.edit();
+
+                                editor.putString(KEY_LINK, submitImage);  // Saving string
+                                // Save the changes in SharedPreferences
+                                editor.commit(); // commit changes
+
+
+                                //  Toast.makeText(getActivity(), "Umefanikiwa kupakua." + fileName, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    //close the streams //
+                    fileInputStream.close();
+                    dos.flush();
+                    dos.close();
+
+                } catch (MalformedURLException ex) {
+
+                    //  dialog.dismiss();
+                    ex.printStackTrace();
 
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
-                            int num = 100;
-                            // progressBar.setVisibility(View.GONE);
-                            // messageText.setText(msg);
-                            dialog.dismiss();
-                            String msg = " Umefanikiwa kuweka picha, sasa weka bidhaa.";
-                            messageText.setText(msg);
-                         //   messageText.setTextColor(getActivity().getResources().getColor(R.color.imageColor));
 
-                            submitImage = "http://sokouhuru.com/uploads/" + fileName;
-
-                          //  Intent startIntent = new Intent(getActivity(), FragmentThree.class);
-                            // positionSearch = getActivity().position;
-                         //   startIntent.putExtra(TAG_POSITION, submitImage);
-                            //    startIntent.putExtra(TAG_POSITION2, positionSearch);
-                        //    startActivityForResult(startIntent, SHARING_CODE);
-                            //Storing the links
-
-
-                            sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                           editor = sharedpreferences.edit();
-
-                            editor.putString(KEY_LINK, submitImage);  // Saving string
-                            // Save the changes in SharedPreferences
-                          editor.commit(); // commit changes
-
-
-                          //  Toast.makeText(getActivity(), "Umefanikiwa kupakua." + fileName, Toast.LENGTH_SHORT).show();
+                            //  progressBar.setVisibility(View.GONE);
+                            messageText.setText("Tatizo la kimtandao, Jaribu tena.");
+                            //  Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                    Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+                } catch (Exception e) {
+
+//                dialog.dismiss();
+                    e.printStackTrace();
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            //   progressBar.setVisibility(View.GONE);
+                            messageText.setText("Tatizo la  kimtandao, Jaribu tena  ");
+                            //   Toast.makeText(getActivity(), "Tatizo la mtandao ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Log.e("Upload server Exception", "Exception : " + e.getMessage(), e);
                 }
+                //  dialog.dismiss();
+                //   progressBar.setVisibility(View.GONE);
+                return serverResponseCode;
 
-                //close the streams //
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
-
-            } catch (MalformedURLException ex) {
-
-                dialog.dismiss();
-                ex.printStackTrace();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-
-                        //  progressBar.setVisibility(View.GONE);
-                        messageText.setText("Tatizo la kimtandao, Jaribu tena.");
-                      //  Toast.makeText(getActivity(), "Tatizo la mtandao", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-            } catch (Exception e) {
-
-                dialog.dismiss();
-                e.printStackTrace();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-
-                        //   progressBar.setVisibility(View.GONE);
-                        messageText.setText("Tatizo la  kimtandao, Jaribu tena  ");
-                     //   Toast.makeText(getActivity(), "Tatizo la mtandao ", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                Log.e("Upload server Exception", "Exception : " + e.getMessage(), e);
             }
-            dialog.dismiss();
-            //   progressBar.setVisibility(View.GONE);
-            return serverResponseCode;
-
         }
+
+
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
 
     }
 
@@ -423,6 +470,8 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
         super.onSaveInstanceState(outState);
 
     }
+
+
 
     @Override
     public void onDestroy() {

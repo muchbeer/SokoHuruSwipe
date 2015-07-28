@@ -135,8 +135,8 @@ public class FragmentThree extends Fragment {
                 if (!name.isEmpty() && !price.isEmpty() && !contact.isEmpty()
                         && image.length()>0 && !place.isEmpty() && !descr.isEmpty()) {
                     registerUser();
-                    editor.clear();
-                   editor.commit();
+
+                    txtName.setText("");
 
                 } else {
 
@@ -308,7 +308,8 @@ public class FragmentThree extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d("SOKO HURU", "On Detach FragmentThree");
-
+        editor.clear();
+        editor.commit();
     }
 
     @Override
