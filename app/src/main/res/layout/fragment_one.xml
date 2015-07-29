@@ -1,6 +1,9 @@
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<RelativeLayout
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +36,7 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/imageColor"
             android:textSize="27dp"
-
+            android:visibility="gone"
             android:text="jambo"/>
 
         <ProgressBar
@@ -42,6 +45,7 @@
             android:layout_width="fill_parent"
             android:layout_height="20dp"
             android:layout_marginBottom="8dp"
+            android:visibility="gone"
             />
 
 
@@ -103,3 +107,4 @@
 
 
 </RelativeLayout>
+</ScrollView>
