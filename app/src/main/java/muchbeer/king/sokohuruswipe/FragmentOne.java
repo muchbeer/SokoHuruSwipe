@@ -242,28 +242,45 @@ public class FragmentOne extends Fragment implements View.OnClickListener {
       
             super.onPreExecute();
 
-            dialog = new ProgressDialog(getActivity(),
-                    R.style.AppTheme_Dark_Dialog);
-            dialog.setIndeterminate(true);
-            dialog.setMessage("Tafadhari subiri...");
-            dialog.setCancelable(true);
-            dialog.show();
+         dialog = new ProgressDialog(getActivity(),
+                 R.style.AppTheme_Dark_Dialog);
+          dialog.setMessage("Tafadhari subiri...");
+           dialog.setCancelable(true);
+           dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+           dialog.show();
+
+            // setting progress bar to zero
+          // progressBar.setProgress(0);
             //return dialog;
         }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            // Making progress bar visible
+         //   progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+        //  progressBar.setProgress(progress[0]);
+
+            // updating percentage value
+         //   txtPercentage.setText(String.valueOf(progress[0]) + "%");
+        }
+
         @Override
         protected String doInBackground(Void... voids) {
-            int count;
+           // int count;
             uploadFile();
             return null;
         }
-
 
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-dialog.dismiss();
+                dialog.dismiss();
         }
 
         public int uploadFile() {
@@ -371,8 +388,14 @@ dialog.dismiss();
                     // Responses from the server (code and message)
                     serverResponseCode = conn.getResponseCode();
                     String serverResponseMessage = conn.getResponseMessage();
-                //    byte data[] = new byte[1024];
+
+
+                 //  byte data[] = new byte[1024];
 //int length = conn.getContentLength();
+                    Log.d("SOKO are bufferSize", String.valueOf(bufferSize)+"  "+ bytesAvailable + "  " +
+                            conn.getContentLength() + "  " + bytesRead);
+                    //      Log.d("SOKO HURU MB  ",)
+
 
                     Log.i("uploadFile", "HTTP Response is : "
                             + serverResponseMessage + ": " + serverResponseCode);
@@ -411,8 +434,17 @@ dialog.dismiss();
                             }
                         });
                     }
+                   // fileInputStream.read(data);
+/**
+                    while (( count = fileInputStream.read(data)) > -1 ) {
+                        total += count;
+                        publishProgress((int)(((total)*100)/bufferSize));
+                       // output.write(data, 0, count);
+                    }
 
-                    //close the streams //
+ **/
+//Log.d("Bytes total", String.valueOf(bytesAvailable) + conn.getContentLength());
+                     //close the streams //
                     fileInputStream.close();
                     dos.flush();
                     dos.close();
